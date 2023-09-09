@@ -1,3 +1,4 @@
+from os import get_inheritable, stat
 import numpy as np
 import copy
 
@@ -70,6 +71,93 @@ class Genome:
                 c_copy.sibling_ind = sibling_ind
                 _exp_links.append(c_copy)
                 Genome.expandLinks(c, uniq_name, _flat_links, _exp_links)
+
+    @staticmethod
+    def genome_to_links(_genome_dicts):
+        link_ind = 0
+        parent_names = [str(link_ind)]
+        links = []
+        
+        for gdict in _genome_dicts:
+            link_name = str(link_ind)
+            parent_ind = parent_names[int(parent_ind)]
+            recur = gdict["link-recurrence"]
+            link = URDFLink(name = link_name,
+                            parent_name = parent_name,
+                            recur = recur + 1,
+                            link_length = gdict["link-length"],
+                            link_radius = gdict["link-radius"],
+                            link_mass = gdict["link-mass"],
+                            joint_type = gdict["joint-type"],
+                            joint_parent = gdict["joint-parent"],
+                            joint_axis_xyz = gdict["joint-axis-xyz"],
+                            joint_origin_rpy_1 = gdict["joint-origin-rpy-1"],
+                            joint_origin_rpy_2 = gdict["joint-origin-rpy-2"],
+                            joint_origin_rpy_3 = gdict["joint-origin-rpy-3"],
+                            joint_origin_xyz_1 = gdict["joint-origin-xyz-1"],
+                            joint_origin_xyz_2 = gdict["joint-origin-xyz-2"],
+                            joint_origin_xyz_3 = gdict["joint-origin-xyz-3"],
+                            control_waveform = gdict["control-waveform"],
+                            control_amp = gdict["control-amp"],
+                            control_freq = gdict["control-freq"])
+            links.append(link)
+            if link_ind != 0:
+                parent_names.append(link_name)
+            link_ind = link_ind + 1
+
+            links[0].parent_name = "None"
+        return links
+
+    @staticmethod
+    def crossover(g1,g2):
+        xo = np.random.randint(len(g1))
+        if xo == 0:
+            return g2
+        if xo == len(g1) - 1:
+            return g1
+        if xo > len(g2):
+            xo = len(g2) - 1
+        g3 = np.concatenate((g1[0:xo], g2[xo:]))
+        return g3
+    
+    @staticmethod
+    def point_mutate(g1, rate, amount):
+        for gene in g1:
+            if np.random.rand() < rate:
+                ind = np.random.randint(len(gene))
+                r = (np.random.rand() - 0.5) * amount
+                gene[ind] = gene[ind] + r
+            return g1
+
+    @staticmethod
+    def shrink_mutate(g1, rate):
+        if len(g1) == 1:
+            return g1
+        if np.random,rand() < rate:
+            ind = np.random.randint(len(g1))
+            g1 = np.delete(g1, ind, 0)
+        return g1
+
+    @staticmethod
+    def grow_mutate(g1, rate):
+        if np.random.rand() < rate:
+            gene = Genome.get_random_gene(len(g1[0]))
+            g1 = np.append(g1, [gene], axis=0)
+        return g1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
