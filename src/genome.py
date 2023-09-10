@@ -1,4 +1,3 @@
-from os import get_inheritable, stat
 import numpy as np
 import copy
 
@@ -76,11 +75,12 @@ class Genome:
     def genome_to_links(_genome_dicts):
         link_ind = 0
         parent_names = [str(link_ind)]
-        links = []
-        
+        links = [] 
         for gdict in _genome_dicts:
+
             link_name = str(link_ind)
-            parent_ind = parent_names[int(parent_ind)]
+            parent_ind = gdict["joint-parent"] * len(parent_names)
+            parent_name = parent_names[int(parent_ind)]
             recur = gdict["link-recurrence"]
             link = URDFLink(name = link_name,
                             parent_name = parent_name,
@@ -144,6 +144,113 @@ class Genome:
             gene = Genome.get_random_gene(len(g1[0]))
             g1 = np.append(g1, [gene], axis=0)
         return g1
+
+    @staticmethod
+    def to_csv(_dna, _csv_file):
+        csv_str = ""
+        for gene in _dna:
+            for val in gene:
+                csv_str = csv_str + str(val) + ","
+            csv_str = csv_str + '\n'
+        with open(_csv_file, 'w') as f:
+            f.write(csv_str)
+
+    @staticmethod
+    def from_csv(_filename):
+        csv_str = ""
+        with open(_filename) as f:
+            csv_str = f.read()
+
+        dna = []
+        lines = csv_str.split('\n')
+        for line in lines:
+            vals = line.split(',')
+            gene = [float(v) for v in vals if v != '']
+            if len(gene) > 0:
+                dna.append(gene)
+        return dna
+class URDFLink:
+    def __init__(self,
+                 name,
+                 parent_name,
+                 recur,
+                 link_length = 0.1,
+                 link_radius = 0.1,
+                 link_mass = 0.1,
+                 joint_type = 0.1,
+                 joint_parent = 0.1,
+                 joint_axis_xyz = 0.1,
+                 joint_origin_rpy_1 = 0.1,
+                 joint_origin_rpy_2 = 0.1,
+                 joint_origin_rpy_3 = 0.1,
+                 joint_origin_xyz_1 = 0.1,
+                 joint_origin_xyz_2 = 0.1,
+                 joint_origin_xyz_3 = 0.1,
+                 control_waveform = 0.1,
+                 control_amp = 0.1,
+                 control_freq = 0.1):
+
+        self.name = name
+        self.parent_name = parent_name
+        self.recur = int(recur)
+        self.link_radius = link_radius
+        self.link_length = link_length
+        self.link_mass = link_mass
+        self.joint_type = joint_type
+        self.joint_parent = joint_parent
+        self.joint_axis_xyz = joint_axis_xyz
+        self.joint_origin_rpy_1 = joint_origin_rpy_1
+        self.joint_origin_rpy_2 = joint_origin_rpy_2
+        self.joint_origin_rpy_3 = joint_origin_rpy_3
+        self.joint_origin_xyz_1 = joint_origin_xyz_1
+        self.joint_origin_xyz_2 = joint_origin_xyz_2
+        self.joint_origin_xyz_3 = joint_origin_xyz_3
+        self.control_waveform = control_waveform
+        self.control_amp = control_amp
+        self.control_freq = control_freq
+        self.sibling_ind = 1
+
+    def to_link_xml(self, adom):
+
+        link_tag = adom.createElement("link")
+        link_tag.setAttribute("name", self.name)
+
+        #segment for link visual
+        vis_tag = adom.createElement("visual")
+        geom_tag = adom.createElement("geometry")
+        cyl_tag = adom.createElement("cylinder")
+        cyl_tag.setAttribute("length", str(self.link_length))
+        cyl_tag.setAttribute("radius", str(self.link_radius))
+
+        #merge
+        geom_tag.appendChild(cyl_tag)
+        vis_tag.appendChild(geom_tag)
+        link_tag.appendChild(vis_tag)
+
+        #segment for link collision 
+        collision_tag = adom.createElement("collision")
+        c_geom_tag = adom.createElement("geometry") 
+        c_cyl_tag = adom.createElement("cylinder")
+        c_cyl_tag.setAttribute("length", str(self.link_length))
+        c_cyl_tag.setAttribute("radius", str(self.link_radius))
+
+        #merge
+        c_geom_tag.appendChild(c_cyl_tag)
+        collision_tag.appendChild(c_geom_tag)
+        link_tag.appendChild(collision_tag)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
