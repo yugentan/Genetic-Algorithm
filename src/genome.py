@@ -239,40 +239,75 @@ class URDFLink:
         collision_tag.appendChild(c_geom_tag)
         link_tag.appendChild(collision_tag)
 
+        #segment for link inertia
+        inertial_tag = adom.createElement("inertial")
+        mass_tag = adom.createElement("mass")
+        mass = np.pi * (self.link_radius * self.link_radius) * self.link_length
+        mass_tag.setAttribute("value", str(mass))
+        inertia_tag = adom.createElement("inertia")
+        inertia_tag.setAttribute("ixx", "0.03")
+        inertia_tag.setAttribute("iyy", "0.03")
+        inertia_tag.setAttribute("izz", "0.03")
+        inertia_tag.setAttribute("ixy", "0")
+        inertia_tag.setAttribute("ixz", "0")
+        inertia_tag.setAttribute("iyz", "0")
 
+        #merge
+        inertial_tag.appendChild(mass_tag)
+        inertial_tag.appendChild(inertia_tag)
+        link_tag.appendChild(inertial_tag)
+        return link_tag
 
+    def to_joint_xml(self, adom):
+        joint_tag = adom.createElement("joint")
+        joint_tag.setAttribute("name", self.name + "_to_" + self.parent_name)
+        if self.joint_type >= 0.5:
+            joint_tag.setAttribute("type", "revolute")
+        else:
+            joint_tag.setAttribute("type", "fixed")
 
+        #parent_segmentation
+        parent_tag = adom.createElement("parent")
+        parent_tag.setAttribute("link", str(self.parent_name))
 
+        #child_segmentation
+        child_tag = adom.createElement("child")
+        child_tag.setAttribute("link", str(self.name))
 
+        #axis segment
+        axis_tag = adom.createElement("axis")
+        if self.joint_axis_xyz <= 0.33:
+            axis_tag.setAttribute("xyz", "1 0 0")
+        if self.joint_axis_xyz > 0.33 and self.joint_axis_xyz <= 0.66:
+            axis_tag.setAttribute("xyz", "0 1 0")
+        if self.joint_axis_xyz > 0.66:
+            axis_tag.setAttribute("xyz", "0 0 1")
 
+        #limit segment
+        limit_tag = adom.createElement("limit")
+        limit_tag.setAttribute("effort","1")
+        limit_tag.setAttribute("lower","0")
+        limit_tag.setAttribute("upper","1")
+        limit_tag.setAttribute("velocity","1")
 
+        #origin segment
+        origin_tag = adom.createElement("origin")
 
+        rpy1 = self.joint_origin_rpy_1 * self.sibling_ind
+        
+        rpy = str(rpy1) + " " + str(self.joint_origin_rpy_2) + " " + str(self.joint_origin_rpy_3)
+        origin_tag.setAttribute("rpy", rpy)
+        xyz = str(self.joint_origin_xyz_1) + " " + str(self.joint_origin_xyz_2) + " " + str(self.joint_origin_xyz_3)
+        origin_tag.setAttribute("xyz", xyz)
 
+        #merge
+        joint_tag.appendChild(parent_tag)
+        joint_tag.appendChild(child_tag)
+        joint_tag.appendChild(axis_tag)
+        joint_tag.appendChild(limit_tag)
+        joint_tag.appendChild(origin_tag)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return joint_tag
 
 
 
