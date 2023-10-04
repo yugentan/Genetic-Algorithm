@@ -14,7 +14,6 @@ class TestSim(unittest.TestCase):
 
     def testRun(self):
         sim = simulation.Simulation()
-        #c = creature.Creature(gene_count=3)
         self.assertIsNotNone(sim.run_creature)
     
     def testRunXML(self):
