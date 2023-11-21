@@ -1,5 +1,8 @@
 import unittest
-import creature
+import os 
+import sys 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from src import creature
 
 class TestCreature(unittest.TestCase):
     def testCreatureCreature(self):
@@ -20,7 +23,7 @@ class TestCreature(unittest.TestCase):
         c = creature.Creature(gene_count=2)
         c.get_expanded_links()
         xml_str = c.to_xml()
-        with open('creature1.urdf', 'w') as f:
+        with open('../data/creature1.urdf', 'w') as f:
             f.write('<?xml version="1.0"?>' + "\n" + xml_str)
 
         self.assertIsNotNone(xml_str)

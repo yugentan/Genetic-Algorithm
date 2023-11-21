@@ -1,22 +1,25 @@
 import unittest
-import population as poplib
-import simulation as simlib
-import creature as crlib
-import genome as genlib
+import os 
+import sys 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from src import simulation as simlib
+from src import population as poplib
+from src import creature as crlib
+from src import genome as genlib
 import numpy as np
 
 class TestGA(unittest.TestCase):
     def testGA(self):
-        pop = poplib.Population(pop_size=2, gene_count=3)
+        pop = poplib.Population(pop_size=3, gene_count=4)
         sim = simlib.ThreadedSim(pool_size=4)
 
-        for generation in range(100):
+        for generation in range(500):
             sim.eval_population(pop, 2400)
             fits = [cr.get_distance_travelled() for cr in pop.creatures]
             fitmap = poplib.Population.get_fitness_map(fits)
 
             #print (generation, np.max(fits), np.mean(fits))
-            print(str(generation) + "," + str(np.mean(fits)))
+            print("Gen: " + str(generation) + ", Mean Fitness: " + str(np.mean(fits)))
             fmax = np.max(fits)
             for cr in pop.creatures:
                 if cr.get_distance_travelled() == fmax:
@@ -36,7 +39,7 @@ class TestGA(unittest.TestCase):
                 cr.set_dna(dna)
                 new_gen.append(cr)
             new_gen[0] = elite
-            csv_filename = str(generation % 10) + "_elite.csv"
+            csv_filename = "../data/" + str(generation % 10) + "_elite.csv"
             genlib.Genome.to_csv(elite.dna, csv_filename)
             pop.creatures = new_gen
 unittest.main()

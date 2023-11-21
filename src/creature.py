@@ -1,4 +1,4 @@
-import genome
+from . import genome
 from xml.dom.minidom import getDOMImplementation
 from enum import Enum
 import numpy as np
@@ -101,7 +101,7 @@ class Creature:
         return self.motors
 
     def update_position(self, position):
-        if self.position != None:
+        if self.end_position != None:
             p1 = np.array(self.end_position)
             p2 = np.array(position)
             dist = np.linalg.norm(p1 - p2)

@@ -1,5 +1,9 @@
 import unittest
-import population
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from src import population
+
 class TestPop(unittest.TestCase):
     def testPopExist(self):
         pop = population.Population(pop_size=10, gene_count=4)

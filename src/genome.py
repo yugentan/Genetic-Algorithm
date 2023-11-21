@@ -58,7 +58,7 @@ class Genome:
 
     @staticmethod
     def expandLinks(_parent_links, _unique_parent_name, _flat_links, _exp_links):
-        children = [l for l in _flat_links if l.parent_name = _parent_links.name]
+        children = [l for l in _flat_links if l.parent_name == _parent_links.name]
         sibling_ind = 1
         for c in children:
             for r in range(c.recur):
@@ -133,7 +133,7 @@ class Genome:
     def shrink_mutate(g1, rate):
         if len(g1) == 1:
             return g1
-        if np.random,rand() < rate:
+        if np.random.rand() < rate:
             ind = np.random.randint(len(g1))
             g1 = np.delete(g1, ind, 0)
         return g1

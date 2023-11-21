@@ -1,8 +1,12 @@
 import unittest
-import simulation
-import creature
-import population
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from src import creature
+from src import population
+from src import simulation
+
 class TestSim(unittest.TestCase):
     def testSimExist(self):
         sim = simulation.Simulation()
@@ -20,7 +24,7 @@ class TestSim(unittest.TestCase):
         sim = simulation.Simulation()
         cr = creature.Creature(gene_count=3)
         sim.run_creature(cr)
-        self.assertTrue(os.path.exist("temp0.urdf"))
+        self.assertTrue(os.path.exists("../data/temp0.urdf"))
 
     def testRunPos(self):
         sim = simulation.Simulation()
@@ -43,10 +47,11 @@ class TestSim(unittest.TestCase):
         sim = simulation.Simulation()
         for cr in pop.creatures:
             sim.run_creature(cr)
+
         dist = [cr.get_distance_travelled() for cr in pop.creatures]
      
         #print(dist)
-        self.assertIsNone(dist)
+        self.assertIsNotNone(dist)
 
     def testProc(self):
         pop = population.Population(pop_size=10, gene_count=3)
