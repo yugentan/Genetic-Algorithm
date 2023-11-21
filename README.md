@@ -3,7 +3,6 @@
 This project emulates Karl Sims' evolutionary approach to generate and simulate creatures using PyBullet's physics engine. The system employs a Genetic Algorithm (GA), a fundamental component of Evolutionary Computation (EC), to evolve and optimize creatures for locomotion and robustness.
 
 ## Background
-
 **Genetic Algorithm (GA) Overview**
 
 - **Representation (Genome):** Creatures are represented as genomes, composed of genes encapsulating various structural and behavioral characteristics such as joint types, lengths, control mechanisms, and more.
@@ -16,7 +15,6 @@ This project emulates Karl Sims' evolutionary approach to generate and simulate 
 - **Crossover Operator:** Facilitates the combination of genetic material from two parent creatures to produce offspring genomes.
 
 ## Fitness Evaluation and Selection
-
 - **Fitness Function:** Evaluates each creature's performance within the simulation based on distance travelled or other locomotion metrics.
 
 - **Selection Mechanism:** Utilizes a fitness-proportional selection method (roulette wheel selection) to determine parent creatures for the next generation.
@@ -37,7 +35,9 @@ This project emulates Karl Sims' evolutionary approach to generate and simulate 
     - `test_population.py:` Unit test for Population class functionalities
     - `test_simulation.py:` Unit test for Simulation class functionalities
 - **data directory:** Contains all the data files generated from `test_ga.py` and file required to run `main.py`.
-
+- **findings directory:** Contains a short writeup in jupyter notebook on the simulation.
+- **build & dist directory:** Currently empty, will be use for future development purpose
+  
 ## Dependencies
 - PyBullet
 - NumPy
@@ -48,6 +48,7 @@ This project emulates Karl Sims' evolutionary approach to generate and simulate 
 - Generation and Testing
     - Execute `test_ga.py` for the evaluation of the genetic algorithm process. This will generate `idx_elite.csv` into the `data` directory where idx will be the current generation % 10. Default generation is set at **100 iterations**, you may change so if you wish to improve result over a longer period of iterations. Similarly, rate of mutation can be tweak here as well. 
     - Execute specified test files with `test` directory to conduct unit testing on various functionalities
+      
 ## Acknowledgements
 Karl Sims' Creature Influence
 
