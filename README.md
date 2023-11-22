@@ -48,7 +48,13 @@ This project emulates Karl Sims' evolutionary approach to generate and simulate 
 - Generation and Testing
     - Execute `test_ga.py` for the evaluation of the genetic algorithm process. This will generate `idx_elite.csv` into the `data` directory where idx will be the current generation % 10. Default generation is set at **100 iterations**, you may change so if you wish to improve result over a longer period of iterations. Similarly, rate of mutation can be tweak here as well. 
     - Execute specified test files with `test` directory to conduct unit testing on various functionalities
-      
+
+## Example
+- Running the generations
+![image](https://github.com/yugentan/Genetic-Algorithm/assets/84921573/2cf9a911-b75f-46b2-b0a9-b275f9888e33)
+- Running the simulation
+![image](https://github.com/yugentan/Genetic-Algorithm/assets/84921573/7d6625fb-d51b-4f53-b057-a4492f68d2c8)
+
 ## Acknowledgements
 Karl Sims' Creature Influence
 
