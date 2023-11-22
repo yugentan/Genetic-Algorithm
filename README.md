@@ -22,18 +22,18 @@ This project emulates Karl Sims' evolutionary approach to generate and simulate 
 - **Elitism:** Retains a certain portion of the best-performing individuals from the current population to ensure their inclusion in the next generation, promoting convergence toward higher fitness solutions.
 
 ## Files and Structure + Test Suite Overview
--   `main.py:` Starts the simulation in PyBullet.
+-   `main.py`: Starts the simulation in PyBullet.
 -   **src directory:**
-    - `genome.py:` Contains Genome-related functions, including gene representation, mutation, crossover, genome-to-links conversion and etc.
-    - `creature.py:` Manages creature generation from genes, and XML serialization.
-    - `population.py:` Responsible for managing populations of creatures.
-    - `simulation.py:` Handles the simulation process using PyBullet.
+    - `genome.py`: Contains Genome-related functions, including gene representation, mutation, crossover, genome-to-links conversion and etc.
+    - `creature.py`: Manages creature generation from genes, and XML serialization.
+    - `population.py`: Responsible for managing populations of creatures.
+    - `simulation.py`: Handles the simulation process using PyBullet.
 -   **test directory:** Contains test suite + the generation of GA process
-    - `test_ga.py:` Runs the genetic algorithm and evaluates its functionality
-    - `test_genome.py:` Unit test for Genome class functionalities
-    - `test_creature.py:` Unit test for Creature class functionalities
-    - `test_population.py:` Unit test for Population class functionalities
-    - `test_simulation.py:` Unit test for Simulation class functionalities
+    - `test_ga.py`: Runs the genetic algorithm and evaluates its functionality
+    - `test_genome.py`: Unit test for Genome class functionalities
+    - `test_creature.py`: Unit test for Creature class functionalities
+    - `test_population.py`: Unit test for Population class functionalities
+    - `test_simulation.py`: Unit test for Simulation class functionalities
 - **data directory:** Contains all the data files generated from `test_ga.py` and file required to run `main.py`.
 - **findings directory:** Contains a short writeup in jupyter notebook on the simulation.
 - **build & dist directory:** Currently empty, will be use for future development purpose
